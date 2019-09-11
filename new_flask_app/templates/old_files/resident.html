@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+  
+<html>
+        <h1> Hey Resident </h1>
+	<form action="{{ url_for('resident_recommend') }}" method="POST">
+		What are you looking for?<br>
+		<input type="text" name="what_are_you_looking_for">
+		<br>
+		Minimum Star Count
+		<br>
+		<input type="text" name="minimum_star_count">
+		<br>
+		Street Address
+		<br>
+		<input type="text" name="street_address"><br>
+		Zip<br>
+		<input type="text" name="zipcode"><br>
+		Max Distance<br>
+		<input type="text" name="max_distance"><br> 
+            <input type="submit" value="Submit">
+        </form>
+</html>

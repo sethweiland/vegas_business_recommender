@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Vegas? Vegas!</title>
+<link rel="stylesheet" href="{{url_for('static',filename='style.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+</head>
+<body>
+	
+	<section class="header">
+	    <a href="/" class="button">Home Page</a>
+	<div class="container">
+	
+	<h1>Welcome to Las Vegas!</h1>
+	<p>Plan your stay</p>
+	<!--	<div class="input-group"> -->
+	<div class="form-box">
+		<form action="/recommend" method="POST">
+		<div class="form-cell">
+		<input type="text" class="form-control" placeholder="What are you looking for?" name="what_are_you_looking_for">
+		</div>
+		<div class="form-cell">
+		<input type="text" class="form-control" placeholder="Minimum Stars" name="minimum_star_count">
+		</div>
+		<div class="form-cell">
+		<input type="text" class="form-control" placeholder="Street Address" name="street_address">
+		</div>
+		<div class="form-cell">
+		<input type="text" class="form-control" placeholder="Max Distance" name="max_distance">
+		</div>
+		<div class="input-group-append">
+			<input type="submit" value="Search" class="input-group-text">
+		</div>
+		<!--	</div> -->
+		</form>
+	</div>
+		<!--	<form action="{{ url_for('resident_recommend') }}" method="POST">
+		<input type="text" class="form-control" placeholder="What are you looking for?" name="what_are_you_looking_for"><br>
+	 <input type="text" class="form-control" placeholder="minimum_stars" name="minimum_star_count"><br>
+	 <input type="text" class="form-control"  placeholder="street address" name="street_address"><br>
+	 <input type="text" name="max_distance" class="form-control" placeholder="max_distance"><br>
+	 <input type="submit" value="Submit">
+</form> -->
+<div> 
+	</section>
+	<section class="features">
+	<h1>Popular Businesses</h1>
+	<div class="container">
+	<div class="row">
+	<div class="col-md-4">
+	<div class="feature-box">
+            <div class="feature-img">
+                    <img src="{{url_for('static',filename='img/edge_steakhouse.jpg')}}">
+                    <div class="bus_name">
+                    <a href="https://www.westgateresorts.com/hotels/nevada/las-vegas/westgate-las-vegas-resort-casino/dining/edge-steakhouse/menu/" class="price">From $29.99</a>
+                    </div>
+                    <div class="address">
+			    <!--                    <p>3000 Paradise Rd.</p> -->
+                    </div>
+                    <div class="feature-details">
+                    <h4>Edge Steakhouse</h4>
+		    <p>Phone: (702) 732-5277<br>3000 Paradise Rd.</p>
+                    </div>
+            </div>
+        </div>
+	</div>
+	<div class="col-md-4">
+	<div class="feature-box">
+            <div class="feature-img">
+                    <img src="{{url_for('static',filename='img/mgm.jpg')}}">
+                    <div class="bus_name">
+			    <a href="https://www.mgmresorts.com/en/casino.html" class="price">From $149.99</a>
+                    </div>
+                    <div class="address">
+			    <!--              <p>3799 S Las Vegas Blvd</p>  -->
+                    </div>
+                    <div class="feature-details">
+                    <h4>MGM Casino</h4>
+		    <p>Phone: (877) 880-0880<br>3799 S Las Vegas Blvd</p>
+                    </div>
+            </div>
+        </div>
+	</div>
+	<div class="col-md-4">
+	<div class="feature-box">
+            <div class="feature-img">
+                    <img src="{{url_for('static',filename='img/soleil.jpg')}}">
+		    <div class="bus_name">
+	            <a href="https://www.cirquedusoleil.com/las-vegas" class="price">From $99.99</a>
+		    </div>
+		    <div class="address">
+			    <!--		    <p>3000 Paradise Rd.</p>   -->
+		    </div>
+		    <div class="feature-details">
+		    <h4>Cirque du Soleil</h4>
+		    <p>Phone: (702) 531-3826<br>Everywhere</p>
+		    </div>
+            </div>
+        </div>
+        </div>
+
+	</div>
+	</div>
+	</section>
+</body>
+</html>

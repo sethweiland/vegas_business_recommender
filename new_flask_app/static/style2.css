@@ -1,0 +1,23 @@
+.leftside, .rightside {
+	height:100vh;
+	width:100%;
+}
+
+@media screen and (min-width:768px) 
+{
+	.leftside, .rightside {
+		height:100vh;
+	}
+}
+
+.leftside {
+
+}
+
+.rightside {
+}
+
+.link_to_city {
+	text-decoration: none;
+	font-size:50px;
+}

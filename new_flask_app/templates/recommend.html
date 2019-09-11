@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+</script>
+<script type="text/javascript">
+jQuery(function($) {
+    // Asynchronously Load the map API 
+    var script = document.createElement('script');
+    script.src = "//maps.googleapis.com/maps/api/js?key=AIzaSyCzfObug6zNxtvZIz5sM9YmbgBqlCRVmGc&sensor=false&callback=initialize";
+    document.body.appendChild(script);
+});
+
+function initialize() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
+    var mapOptions = {
+        mapTypeId: 'roadmap'
+    };
+                    
+    // Display a map on the page
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    map.setTilt(45);
+        
+    // Multiple Markers
+    var markers = [
+	    ['{{recommend[0][1]|replace('"','')|replace('&','')}}, Las Vegas',{{recommend[0][7]}},{{recommend[0][8]}}],
+	    ['{{recommend[1][1]|replace('"','')|replace('&','')}}, Las Vegas',{{recommend[1][7]}},{{recommend[1][8]}}],
+	    ['{{recommend[2][1]|replace('"','')|replace('&','')}}, Las Vegas',{{recommend[2][7]}},{{recommend[2][8]}}],
+	    ['{{recommend[3][1]|replace('"','')|replace('&','')}}, Las Vegas',{{recommend[3][7]}},{{recommend[3][8]}}],
+	    ['{{recommend[4][1]|replace('"','')|replace('&','')}}, Las Vegas',{{recommend[4][7]}},{{recommend[4][8]}}]
+        //['London Eye, London', 51.503454,-0.119562],
+        //['Palace of Westminster, London', 51.499633,-0.124755]
+    ];
+                        
+    // Info Window Content
+      var infoWindowContent = [
+	['<div class="info_content">' +
+	 '<h3>{{recommend[0][1]|replace('"','')}}</h3>',
+	+ '</div>'],
+	['<div class="info_content">' +
+         '<h3>{{recommend[1][1]|replace('"','')}}</h3>',
+        + '</div>'],
+	['<div class="info_content">' +
+         '<h3>{{recommend[2][1]|replace('"','')}}</h3>',
+        + '</div>'],
+	['<div class="info_content">' +
+         '<h3>{{recommend[3][1]|replace('"','')}}</h3>',
+        + '</div>'],
+	['<div class="info_content">' +
+         '<h3>{{recommend[4][1]|replace('"','')}}</h3>',
+        + '</div>']
+      ]
+  /*  var infoWindowContent = [
+        ['<div class="info_content">' +
+        '<h3>London Eye</h3>' +
+        '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' +        '</div>'],
+        ['<div class="info_content">' +
+        '<h3>Palace of Westminster</h3>' +
+        '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
+        '</div>']
+    ];*/
+        
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+    
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0]
+        });
+        
+        // Allow each marker to have an info window    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(14);
+        google.maps.event.removeListener(boundsListener);
+    });
+    
+}
+</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{{ url_for('static',filename='style_rec.css') }}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Quicksand:300,500" rel="stylesheet">
+</head>
+<body>
+<!-- <img src="{{url_for('static',filename='img/orange_background.jpeg')}}" id="bg" alt=""> -->
+	<div class="column">
+<a href="/" class="button">Home Page</a><br><br>
+<ul class="list-group" style="overflow: scroll;">
+	
+	{% for item in recommend %}
+	<li class="list-item">
+	
+		<h3 class="restaurant_header">{{loop.index}}. {{item[1] | replace('"','')}}
+		</h3>
+		<h6>{{item[3] | replace('"','')}}<br>Review Count: {{item[5]}}<br>
+		{% for num in list_stars %}
+		{% if num==item[4]|float() %}
+		{% for star in range(num|int()) %}
+	        <i class="fa fa-star"></i>
+		{% endfor %}
+		{% endif %}
+		{% endfor %}
+		{% if (item[3]|float()-item[3]|int())==0.5 %}
+		<i class="fa fa-star-half=o"</i>
+		{% endif %}
+		<br>{{item[6]}} Miles Away<br>
+		<form action="/recommend/directions" method="POST">
+		<input type="submit" value="Get Directions" name="{{address}}^{{item[3]}}" class="form-submit-button">	
+		</form>
+		<br>
+		<img src={{item[9]}} class="yelp_picture">
+	</h6>
+	</li>
+	<br>
+	{% endfor %}
+</ul>
+	</div>
+
+<div class="column">
+<br><br>
+<div id="map_wrapper">
+    <div id="map_canvas" class="mapping"></div>
+</div>
+
+</div>
+<!-- <iframe
+  width="450"
+  height="250"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/search?key=AIzaSyCzfObug6zNxtvZIz5sM9YmbgBqlCRVmGc&q=3500+Las+Vegas+Blvd+S+Las+Vegas+Nevada&3400+Las+Vegas+Blvd+S+Las+Vegas+Nevada">
+</iframe>
+</div>   -->
+<!-- <h1> {% for item in recommend %}
+	<tr>
+		<td> {{ item[1] }}</td>
+	</tr>
+	{% endfor %}
+</h1> -->
+</body>
+</html>
+
