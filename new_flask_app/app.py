@@ -4,14 +4,16 @@ from model import (calc_distance,get_user_lat_long,filter_businesses_by_location
 import pickle
 from yelp.client import Client
 import requests
+from gensim.models import Word2Vec
 
 app = Flask(__name__)
 app.config.from_object("config")
 
-with open("gensim_google_news_model","rb") as f:
-    model = pickle.load(f)
+#with open("gensim_google_news_model","rb") as f:
+ #   model = pickle.load(f)
+model = Word2Vec.load("model_gensim_bi_gram") 
 
-YELP_API_KEY="z60c4X_qzjjIEuLEVyJK_6B3yfbzOsvG5IKJMcaXHbxG6aRQ5GU3uv-tuu-3vHydrXR6waOLz1NogfdRMXeMqk_j58yhap5hk1DVZL8vWCDUBO1T_ghrV5Mq7O13XXYx"
+YELP_API_KEY="dLJpJbvhoFx6LxCYAV-iYzx8xonB-Z-pqtEoSHIdH7cRzg_k788mW1ZJjt73xYS6c1bQuhNqp-TqgSEbX_RYCcdxLJU8AfFdR1MVmCxce2QVeiOBrZ8AryJMTXd5XXYx"
 
 
 @app.route("/",methods=["POST","GET"]) 
@@ -49,7 +51,7 @@ def resident_recommend():
     #print(recs)
     list_stars = [0.0,0.5,1.0,1.5,2.0,3.0,3.5,4.0,4.5,5.0]  
     
-    yelp_headers={'Authorization': 'Bearer z60c4X_qzjjIEuLEVyJK_6B3yfbzOsvG5IKJMcaXHbxG6aRQ5GU3uv-tuu-3vHydrXR6waOLz1NogfdRMXeMqk_j58yhap5hk1DVZL8vWCDUBO1T_ghrV5Mq7O13XXYx'}
+    yelp_headers={'Authorization': 'Bearer dLJpJbvhoFx6LxCYAV-iYzx8xonB-Z-pqtEoSHIdH7cRzg_k788mW1ZJjt73xYS6c1bQuhNqp-TqgSEbX_RYCcdxLJU8AfFdR1MVmCxce2QVeiOBrZ8AryJMTXd5XXYx'}
     business_ids = recommendations.iloc[:,0].values.tolist()
     recommendations['photo']=0
     for index, id_ in enumerate(business_ids):
@@ -65,9 +67,9 @@ def resident_recommend():
             #photo_endpoints.append([])
             continue
     recs = recommendations.values.tolist()
-    print(np.array(recs).shape)
-    #print(recs[0][9])
-    return render_template("recommend.html",recommend=recs,lat_lon=user_lat_lon,min_star=min_star,list_stars=list_stars, address=address) 
+    lat = user_lat_lon[0]
+    lon = user_lat_lon[1]
+    return render_template("recommend.html",recommend=recs,lat=lat,lon=lon,min_star=min_star,list_stars=list_stars, address=address) 
 
 @app.route("/recommend/directions",methods=["POST","GET"])
 def direct():

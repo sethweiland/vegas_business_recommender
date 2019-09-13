@@ -17,12 +17,14 @@
 	padding-top: 260px;
 	padding-bottom: 0;
 	font-size: 55px;
-	
+	font-weight: 700;
 }
 
 .header p {
 	margin: 18px 0;
 	text-align: center;
+	font-size 25px;
+	font-weight: 700;
 }
 
 .input-group {
@@ -56,6 +58,7 @@
 
 .form-cell {
 	display: table-cell;
+	text-align: center;
 }
 
 .input-group-text {
